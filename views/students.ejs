@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="/javascripts/RequestManager.js"></script>
+    <script>
+      function onDelete(id) {
+        RequestManager.deleteRequest("/students/deleteStudent", { id: id });
+      }
+    </script>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <a href="/students/add">Додати нового студента</a>
+    <div class="table">
+      <div class="row head">
+        <div>№</div>
+        <div>ПІБ</div>
+        <div>Вік</div>
+        <div>Середній бал</div>
+        <div>Дії</div>
+      </div>
+      <% studentsList.forEach((student, i) => { %>
+      <div class="row">
+        <div><%= i + 1 %></div>
+        <div><%= student.name %></div>
+        <div><%= student.age %></div>
+        <div><%= student.averageGrade %></div>
+        <div class="actions">
+          <a href="/students/edit/<%= student.id %>">✎</a>
+          <button onclick="onDelete('<%= student.id %>')">🗑</button>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+  </body>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .table {
+      border: 1px solid rgb(146, 146, 146);
+      width: 40%;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 40px 1fr 50px 150px 70px;
+    }
+    .row > div {
+      padding: 5px;
+    }
+    .row > div:not(:last-child) {
+      border-right: 1px solid rgb(146, 146, 146);
+    }
+    .row:not(:last-child) {
+      border-bottom: 1px solid rgb(146, 146, 146);
+    }
+    .head {
+      font-weight: bold;
+      color: white;
+      background-color: rgb(40, 109, 140);
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+
+      font-size: 20px;
+    }
+    .actions a {
+      text-decoration: none;
+    }
+    .actions a:first-child {
+      color: black;
+    }
+    .actions button {
+      color: red;
+    }
+  </style>
+</html>

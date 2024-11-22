@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form action="/courses/add" method="POST">
+      <label
+        >Назва курсу
+        <input type="text" name="courseName" value="<%= data.courseName %>" />
+      </label>
+      <label
+        >Тривалість
+        <input type="text" name="duration" value="<%= data.duration %>" />
+      </label>
+      <br /><br />
+      Приєднати студентів до курсу <% studentsList.forEach(student => { %>
+      <label>
+        <input type="checkbox" name="students" value="<%= student._id %>" />
+        <%= student.name %>
+      </label>
+      <% }); %>
+      <br /><br />
+      Додати семінар
+      <label>
+        Тема
+        <input
+          type="text"
+          name="seminarTopic"
+          value="<%= data.seminarTopic %>"
+        />
+      </label>
+      <label>
+        Тривалість
+        <input
+          type="text"
+          name="seminarDuration"
+          value="<%= data.seminarDuration %>"
+        />
+      </label>
+      <label>
+        Оберіть студента
+        <select name="responsibleStudent">
+          <% studentsList.forEach(student => { %>
+          <option value="<%= student.id %>"><%= student.name %></option>
+          <% }); %>
+        </select> </label
+      ><br />
+      <button>Додати курс</button>
+    </form>
+  </body>
+  <style>
+    label {
+      display: block;
+    }
+  </style>
+</html>

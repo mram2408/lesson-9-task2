@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="/javascripts/RequestManager.js"></script>
+    <script>
+      function onDelete(id) {
+        RequestManager.deleteRequest("/courses/delete", { id: id });
+      }
+    </script>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <h2><%= courseData.courseName %></h2>
+    <form action="/courses/edit/<%= courseData.id %>" method="POST">
+      <label>
+        Назва
+        <input
+          type="text"
+          name="courseName"
+          value="<%= courseData.courseName %>"
+        />
+      </label>
+      <label>
+        Тривалість
+        <input type="text" name="duration" value="<%= courseData.duration %>" />
+      </label>
+      <br /><br />
+      Керування студентами <% studentsList.forEach(student => { %>
+      <label>
+        <input type="checkbox" name="students" value="<%= student.id %>" <%=
+        courseData.students.some((courseStudent => courseStudent.id ===
+        student.id)) ? 'checked' : '' %> /> <%= student.name %>
+      </label>
+      <% });%>
+      <button>Зберегти</button>
+    </form>
+    <br /><br />
+    <div>Керування семінарами</div>
+    <% courseData.seminars.forEach(seminar => { %>
+    <div class="seminar">
+      <div>
+        <div>Тема: <%= seminar.topic %></div>
+        <div>Тривалість: <%= seminar.duration %></div>
+        <div>
+          Відповідальний студент: <%= seminar.responsibleStudent.name %>
+        </div>
+      </div>
+      <div>
+        <button onclick="onDelete('<%= seminar.id %>')">Видалити</button>
+      </div>
+    </div>
+    <br />
+    <% }); %>
+    <br /><br />
+    <div>Новий семінар</div>
+    <form action="/courses/edit/<%= courseData.id %>" method="POST">
+      <label>
+        Тема:
+        <input type="text" name="topic" />
+      </label>
+      <label>
+        Тривалість
+        <input type="text" name="duration" />
+      </label>
+      <label>
+        Відповідальний студент
+        <select name="responsibleStudent">
+          <% courseData.students.forEach(student => { %>
+          <option value="<%= student.id %>"><%= student.name %></option>
+          <% }); %>
+        </select>
+      </label>
+      <button type="submit">Додати</button>
+    </form>
+  </body>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    h2 {
+      color: rgb(103, 103, 103);
+    }
+    label {
+      display: block;
+    }
+    .seminar {
+      display: flex;
+    }
+  </style>
+</html>

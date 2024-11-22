@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <script defer src="/javascripts/RequestManager.js"></script>
+    <script>
+      function onDelete(id) {
+        RequestManager.deleteRequest("/courses/delete", { id: id });
+      }
+    </script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <a href="/courses/add">Додати новий курс</a>
+    <div class="table">
+      <div class="row head">
+        <div>Назва курсу</div>
+        <div>Тривалість</div>
+        <div>Студенти</div>
+        <div>Семінари</div>
+        <div>Дії</div>
+      </div>
+      <% coursesList.forEach(course => { %>
+      <div class="row">
+        <div><%=course.courseName %></div>
+        <div><%=course.duration %></div>
+        <div>
+          <% course.students.forEach((student, i) => { %>
+          <div><%= i+1 %>. <%= student.name %></div>
+          <% }); %>
+        </div>
+        <div class="seminars">
+          <% course.seminars.forEach(seminar => { %>
+          <div>
+            <div>Тема: <%= seminar.topic %></div>
+            <div>Студент: <%= seminar.responsibleStudent.name %></div>
+            <div>Тривалість: <%= seminar.duration %></div>
+          </div>
+          <% }); %>
+        </div>
+        <div class="actions">
+          <a href="/courses/edit/<%= course.id %>">✎</a>
+          <button onclick="onDelete('<%= course.id %>')">🗑</button>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+  </body>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .table {
+      border: 1px solid rgb(146, 146, 146);
+      width: 60%;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 200px 200px 300px 70px;
+    }
+    .row > div {
+      padding: 5px;
+    }
+    .row > div:not(:last-child) {
+      border-right: 1px solid rgb(146, 146, 146);
+    }
+    .row:not(:last-child) {
+      border-bottom: 1px solid rgb(146, 146, 146);
+    }
+    .head {
+      font-weight: bold;
+      color: white;
+      background-color: rgb(40, 109, 140);
+    }
+    .seminars {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .seminars > div:not(:last-child) {
+      border-bottom: 1px solid rgb(146, 146, 146);
+    }
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      font-size: 20px;
+    }
+    .actions a {
+      text-decoration: none;
+    }
+    .actions a:first-child {
+      color: black;
+    }
+    .actions button {
+      color: red;
+    }
+  </style>
+</html>

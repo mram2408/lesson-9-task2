@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <% if(errors?.length > 0) { %>
+    <ul>
+      <% errors.forEach(function (error) { %>
+      <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+    <% } %>
+    <form
+      action="<%= data.id ?  `/students/edit/${data.id}` : '/students/add' %>"
+      method="POST"
+    >
+      <label>
+        ПІБ
+        <input type="text" value="<%= data.name %>" name="name" />
+      </label>
+      <label>
+        Вік
+        <input type="text" value="<%= data.age %>" name="age" />
+      </label>
+      <label>
+        Середній бал
+        <input
+          type="text"
+          value="<%= data.averageGrade %>"
+          name="averageGrade"
+        />
+      </label>
+      <button type="submit"><%= data.id ? "Змінити" : 'Додати' %></button>
+    </form>
+  </body>
+</html>
